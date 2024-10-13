@@ -44,6 +44,7 @@ export default function Navigation() {
                         <ListItemText primary="Groups"/>
                     </ListItemButton>
                 </ListItem>
+
                 <ListItem key="subjects" disablePadding>
                     <ListItemButton onClick={() => {
                         navigate(`/subjects`);
@@ -53,6 +54,18 @@ export default function Navigation() {
                             <CategoryIcon/>
                         </ListItemIcon>
                         <ListItemText primary="Subjects"/>
+                    </ListItemButton>
+                </ListItem>
+
+                <ListItem key="teachers" disablePadding>
+                    <ListItemButton onClick={() => {
+                        navigate(`/teachers`);
+                        setMobileOpen(false);
+                    }}>
+                        <ListItemIcon>
+                            <CategoryIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Teachers"/>
                     </ListItemButton>
                 </ListItem>
 
