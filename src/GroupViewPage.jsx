@@ -50,8 +50,6 @@ const columns = [
 ];
 
 export default function GroupViewPage() {
-    navigationTitle.value = "Group \"...\"";
-
     const params = useParams();
     const [loading, setLoading] = useState(true);
     const [group, setGroup] = useState(null);
@@ -80,6 +78,8 @@ export default function GroupViewPage() {
     }
 
     useEffect(() => {
+        navigationTitle.value = "Group \"...\"";
+
         fetch(`http://127.0.0.1:8000/api/groups/${params.groupId}`).then(resp => {
             resp.json().then(json => {
                 if (resp.status >= 400 && "detail" in json) {
@@ -87,6 +87,7 @@ export default function GroupViewPage() {
                 } else if (resp.status >= 400) {
                     enqueueSnackbar("Failed to fetch group info from server!", {variant: "error"});
                 } else {
+                    navigationTitle.value = `Group "${json.name}"`;
                     setGroup(json);
                     fetchSchedule();
                 }
@@ -96,11 +97,6 @@ export default function GroupViewPage() {
             setLoading(false);
         });
     }, [enqueueSnackbar]);
-
-    useEffect(() => {
-        const groupName = group === null ? "..." : group.name;
-        navigationTitle.value = `Group "${groupName}"`;
-    }, [group]);
 
     const saveGroupName = () => {
         setLoading(true);

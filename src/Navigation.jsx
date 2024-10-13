@@ -44,6 +44,17 @@ export default function Navigation() {
                         <ListItemText primary="Groups"/>
                     </ListItemButton>
                 </ListItem>
+                <ListItem key="subjects" disablePadding>
+                    <ListItemButton onClick={() => {
+                        navigate(`/subjects`);
+                        setMobileOpen(false);
+                    }}>
+                        <ListItemIcon>
+                            <CategoryIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Subjects"/>
+                    </ListItemButton>
+                </ListItem>
 
                 <Divider/>
             </List>
@@ -58,8 +69,8 @@ export default function Navigation() {
                         <MenuIcon onClick={handleDrawerToggle}/>
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        {navigationTitle.value
-                        }</Typography>
+                        {navigationTitle}
+                    </Typography>
                 </Toolbar>
             </AppBar>
         </Box>
