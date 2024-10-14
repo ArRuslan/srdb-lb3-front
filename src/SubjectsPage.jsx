@@ -35,6 +35,7 @@ const columns = [
 export default function SubjectsPage() {
     navigationTitle.value = "Subjects";
     const [loading, setLoading] = useState(true);
+    const [rowsCount, setRowsCount] = useState(0);
     const [subjects, setSubjects] = useState([]);
     const [createOpen, setCreateOpen] = useState(false);
     const [paginationModel, setPaginationModel] = useState({page: 0, pageSize: 10});
@@ -49,7 +50,8 @@ export default function SubjectsPage() {
                 } else if (resp.status >= 400) {
                     enqueueSnackbar("Failed to fetch subjects from server!", {variant: "error"});
                 } else {
-                    setSubjects(json);
+                    setRowsCount(json.count);
+                    setSubjects(json.results);
                     setLoading(false);
                 }
             });
@@ -68,7 +70,7 @@ export default function SubjectsPage() {
                 <DataGrid
                     loading={loading}
                     rows={subjects}
-                    rowCount={subjects.length}
+                    rowCount={rowsCount}
                     columns={columns}
                     pageSizeOptions={[10, 25, 50, 100]}
                     disableRowSelectionOnClick

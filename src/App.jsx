@@ -6,6 +6,7 @@ import SubjectsPage from "./SubjectsPage.jsx";
 import SubjectViewPage from "./SubjectViewPage.jsx";
 import TeacherViewPage from "./TeacherViewPage.jsx";
 import TeachersPage from "./TeachersPage.jsx";
+import SchedulePage from "./SchedulePage.jsx";
 
 
 function SnackbarWrapper({children}) {
@@ -29,6 +30,7 @@ export default function App() {
                 <Route path="/subjects/:subjectId" element={<SnackbarWrapper><SubjectViewPage/></SnackbarWrapper>}/>
                 <Route path="/teachers" element={<SnackbarWrapper><TeachersPage/></SnackbarWrapper>}/>
                 <Route path="/teachers/:teacherId" element={<SnackbarWrapper><TeacherViewPage/></SnackbarWrapper>}/>
+                <Route path="/schedule" element={<SnackbarWrapper><SchedulePage/></SnackbarWrapper>}/>
 
                 <Route path="*" element={def}/>
             </Routes>

@@ -69,6 +69,18 @@ export default function Navigation() {
                     </ListItemButton>
                 </ListItem>
 
+                <ListItem key="schedule" disablePadding>
+                    <ListItemButton onClick={() => {
+                        navigate(`/schedule`);
+                        setMobileOpen(false);
+                    }}>
+                        <ListItemIcon>
+                            <CategoryIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="All schedule items"/>
+                    </ListItemButton>
+                </ListItem>
+
                 <Divider/>
             </List>
         </div>

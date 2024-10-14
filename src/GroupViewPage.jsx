@@ -39,14 +39,14 @@ const columns = [
             return `${row.teacher.first_name} ${row.teacher.last_name}`
         }
     },
-    {
+    /*{
         field: "_action",
         headerName: "Action",
         width: 150,
         renderCell: function TableCellRender({row}) {
             return <Button variant="contained">Delete</Button>
         }
-    },
+    },*/
 ];
 
 export default function GroupViewPage() {

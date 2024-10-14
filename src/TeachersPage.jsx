@@ -36,6 +36,7 @@ const columns = [
 export default function TeachersPage() {
     navigationTitle.value = "Teachers";
     const [loading, setLoading] = useState(true);
+    const [rowsCount, setRowsCount] = useState(0);
     const [teachers, setTeachers] = useState([]);
     const [createOpen, setCreateOpen] = useState(false);
     const [paginationModel, setPaginationModel] = useState({page: 0, pageSize: 10});
@@ -50,7 +51,8 @@ export default function TeachersPage() {
                 } else if (resp.status >= 400) {
                     enqueueSnackbar("Failed to fetch teachers from server!", {variant: "error"});
                 } else {
-                    setTeachers(json);
+                    setRowsCount(json.count);
+                    setTeachers(json.results);
                     setLoading(false);
                 }
             });
@@ -69,7 +71,7 @@ export default function TeachersPage() {
                 <DataGrid
                     loading={loading}
                     rows={teachers}
-                    rowCount={teachers.length}
+                    rowCount={rowsCount}
                     columns={columns}
                     pageSizeOptions={[10, 25, 50, 100]}
                     disableRowSelectionOnClick

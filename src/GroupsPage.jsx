@@ -35,6 +35,7 @@ const columns = [
 export default function GroupsPage() {
     navigationTitle.value = "Groups";
     const [loading, setLoading] = useState(true);
+    const [rowsCount, setRowsCount] = useState(0);
     const [groups, setGroups] = useState([]);
     const [createOpen, setCreateOpen] = useState(false);
     const [paginationModel, setPaginationModel] = useState({page: 0, pageSize: 10});
@@ -49,7 +50,8 @@ export default function GroupsPage() {
                 } else if (resp.status >= 400) {
                     enqueueSnackbar("Failed to fetch groups from server!", {variant: "error"});
                 } else {
-                    setGroups(json);
+                    setRowsCount(json.count);
+                    setGroups(json.results);
                     setLoading(false);
                 }
             });
@@ -68,7 +70,7 @@ export default function GroupsPage() {
                 <DataGrid
                     loading={loading}
                     rows={groups}
-                    rowCount={groups.length}
+                    rowCount={rowsCount}
                     columns={columns}
                     pageSizeOptions={[10, 25, 50, 100]}
                     disableRowSelectionOnClick
