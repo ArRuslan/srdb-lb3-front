@@ -4,7 +4,7 @@ import Navigation from "./Navigation.jsx";
 import {DataGrid} from '@mui/x-data-grid';
 import {useEffect, useState} from "react";
 import {useSnackbar} from "notistack";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const columns = [
     { field: "id", headerName: "ID", width: 90 },
@@ -24,6 +24,11 @@ const columns = [
         width: 150,
     },
     {
+        field: "start_time",
+        headerName: "Start time",
+        width: 200,
+    },
+    {
         field: "subject",
         headerName: "Subject",
         width: 150,
@@ -39,14 +44,6 @@ const columns = [
             return `${row.teacher.first_name} ${row.teacher.last_name}`
         }
     },
-    /*{
-        field: "_action",
-        headerName: "Action",
-        width: 150,
-        renderCell: function TableCellRender({row}) {
-            return <Button variant="contained">Delete</Button>
-        }
-    },*/
 ];
 
 export default function GroupViewPage() {
@@ -57,6 +54,7 @@ export default function GroupViewPage() {
     const [changedName, setChangedName] = useState(null);
     const [createOpen, setCreateOpen] = useState(false);
     const {enqueueSnackbar} = useSnackbar();
+    const navigate = useNavigate();
 
     const fetchSchedule = () => {
         setLoading(true);
@@ -82,6 +80,9 @@ export default function GroupViewPage() {
 
         fetch(`http://127.0.0.1:8000/api/groups/${params.groupId}`).then(resp => {
             resp.json().then(json => {
+                if(resp.status === 404) {
+                    navigate("/groups");
+                }
                 if (resp.status >= 400 && "detail" in json) {
                     enqueueSnackbar(`Failed to fetch group info from server: ${json.detail}`, {variant: "error"});
                 } else if (resp.status >= 400) {
@@ -122,6 +123,18 @@ export default function GroupViewPage() {
         });
     }
 
+    const deleteGroup = () => {
+        fetch(`http://127.0.0.1:8000/api/groups/${params.groupId}`, {method: "DELETE"}).then(resp => {
+            if (resp.status >= 400) {
+                enqueueSnackbar("Failed to delete group!", {variant: "error"});
+            } else {
+                navigate("/groups");
+            }
+        }, (e) => {
+            enqueueSnackbar("Failed to delete group!", {variant: "error"});
+        });
+    }
+
     return (
         <>
             <Navigation/>
@@ -131,6 +144,8 @@ export default function GroupViewPage() {
                            disabled={loading} onChange={e => setChangedName(e.target.value)}/>
                 <Button variant="contained" style={{width: "100%"}} onClick={saveGroupName}
                         disabled={loading || changedName === null || group === null || changedName === group.name}>Save</Button>
+
+                <Button variant="outlined" style={{width: "100%"}} onClick={deleteGroup} disabled={loading} color="error">Delete</Button>
 
                 <DataGrid
                     loading={loading}

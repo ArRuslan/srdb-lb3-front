@@ -1,10 +1,11 @@
-import {navigationTitle} from "./signals.js";
+import {navigationTitle, tableRefresh} from "./signals.js";
 import {Box, Button} from "@mui/material";
 import Navigation from "./Navigation.jsx";
 import {DataGrid} from '@mui/x-data-grid';
 import {useEffect, useState} from "react";
 import {useSnackbar} from "notistack";
 import {useNavigate} from "react-router-dom";
+import {useSignalEffect} from "@preact/signals-react";
 
 const columns = [
     { field: "id", headerName: "ID", width: 90 },
@@ -36,7 +37,7 @@ const columns = [
         field: "subject",
         headerName: "Subject",
         width: 150,
-        renderCell: function GroupCell({row}) {
+        renderCell: function SubjectCell({row}) {
             const navigate = useNavigate();
             return <a href="#" onClick={() => navigate(`/subjects/${row.subject.id}`)}>{row.subject.name} ({row.subject.short_name})</a>;
         }
@@ -45,19 +46,31 @@ const columns = [
         field: "teacher",
         headerName: "Teacher",
         width: 150,
-        renderCell: function GroupCell({row}) {
+        renderCell: function TeacherCell({row}) {
             const navigate = useNavigate();
             return <a href="#" onClick={() => navigate(`/teachers/${row.teacher.id}`)}>{row.teacher.first_name} {row.teacher.last_name}</a>;
         }
     },
-    /*{
+    {
         field: "_action",
         headerName: "Action",
         width: 150,
-        renderCell: function TableCellRender({row}) {
-            return <Button variant="contained">Delete</Button>
+        renderCell: function ActionsCell({row}) {
+            const {enqueueSnackbar} = useSnackbar();
+
+            return <Button variant="contained" onClick={() => {
+                fetch(`http://127.0.0.1:8000/api/schedule/${row.id}`, {method: "DELETE"}).then(resp => {
+                    if (resp.status >= 400) {
+                        enqueueSnackbar("Failed to delete schedule item!", {variant: "error"});
+                    } else {
+                        location.reload();
+                    }
+                }, (e) => {
+                    enqueueSnackbar("Failed to delete schedule item!", {variant: "error"});
+                });
+            }}>Delete</Button>
         }
-    },*/
+    },
 ];
 
 export default function SchedulePage() {
