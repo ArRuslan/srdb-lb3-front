@@ -70,6 +70,7 @@ export default function SubjectViewPage() {
             if (resp.status >= 400) {
                 enqueueSnackbar("Failed to delete subject!", {variant: "error"});
             } else {
+                enqueueSnackbar("Subject deleted!", {variant: "success"});
                 navigate("/subjects");
             }
         }, (e) => {

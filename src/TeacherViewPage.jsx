@@ -70,6 +70,7 @@ export default function TeacherViewPage() {
             if (resp.status >= 400) {
                 enqueueSnackbar("Failed to delete teacher!", {variant: "error"});
             } else {
+                enqueueSnackbar("Teacher deleted!", {variant: "success"});
                 navigate("/teachers");
             }
         }, (e) => {

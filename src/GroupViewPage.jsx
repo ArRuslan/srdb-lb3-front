@@ -128,6 +128,7 @@ export default function GroupViewPage() {
             if (resp.status >= 400) {
                 enqueueSnackbar("Failed to delete group!", {variant: "error"});
             } else {
+                enqueueSnackbar("Group deleted!", {variant: "success"});
                 navigate("/groups");
             }
         }, (e) => {
